@@ -31,8 +31,8 @@ function AddPackageModal({ openMod, setOpenMod }) {
         }
         if (formDataExists) {
             const highestPackageId = Math.max(...appData.packages.map(pkg => {
-                const numPart = parseInt(pkg.id.match(/\d+$/)[0]); // Extract numeric part of ID
-                return isNaN(numPart) ? 0 : numPart; // Handle NaN case if no numeric part found
+                const numPart = parseInt(pkg.id.match(/\d+$/)[0]);
+                return isNaN(numPart) ? 0 : numPart;
             }));
             const newPackageId = `pak${highestPackageId + 1}`;
             const highestShippingOrder = Math.max(...appData.packages.map(pkg => pkg.shippingOrder));

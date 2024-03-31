@@ -5,10 +5,8 @@ export const appContext = createContext(null)
 
 
 function App() {
-  // const [appData, setAppData] = useState({ customers: [], packages: [] });
-
   const [appData, setAppData] = useState();
-
+  // todo split appData to two states-packages and customers
   useEffect(() => {
     fetch("/data.json")
       .then((response) => response.json())
@@ -19,18 +17,18 @@ function App() {
   }, []);
   return (
     <>
-    <appContext.Provider value={{
+      <appContext.Provider value={{
 
-       appData,setAppData
+        appData, setAppData
       }}>
-      {appData &&
-        <SiteRoutes appData={appData} setAppData={setAppData} />
-      }
-      {!appData &&
-        <div>Loading...</div>}
-        
-        </appContext.Provider>
-        
+        {appData &&
+          <SiteRoutes appData={appData} setAppData={setAppData} />
+        }
+        {!appData &&
+          <div>Loading...</div>}
+
+      </appContext.Provider>
+
     </>
   )
 }

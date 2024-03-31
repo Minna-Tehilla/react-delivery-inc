@@ -14,7 +14,6 @@ function Snackbar() {
         setOpenSnackbar(false);
     };
     return (
-
         <Snackbar
             anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
             open={openSnackbar}
@@ -24,7 +23,7 @@ function Snackbar() {
             <MuiAlert
                 elevation={6}
                 variant="filled"
-                severity="error" // Change severity to 'error' for fail message
+                severity="error"
                 onClose={handleSnackbarClose}
             >
                 {snackbarMessage}

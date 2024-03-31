@@ -15,13 +15,10 @@ import ListItemText from "@mui/material/ListItemText";
 import { appContext } from "../App";
 
 function NavBar() {
-  // const [appData, setAppData] = useState({ customers: [], packages: [] });
   const [openDrawer, setOpenDrawer] = useState(false);
-//   const { appData, setAppData } = useContext(appContext)
   const navigate = useNavigate();
   const handleDrawerToggle = () => {
     setOpenDrawer(!openDrawer);
-    // console.log(appData)
   };
 
 

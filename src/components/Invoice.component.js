@@ -13,33 +13,26 @@ function Invoice() {
   const [invoices, setInvoices] = useState([]);
 
   useEffect(() => {
-    // Function to generate invoices based on packages and customers
     const generateInvoices = () => {
       const newInvoices = [];
-      // Iterate through each customer
       appData.customers.forEach(customer => {
-        // Filter packages for the current customer
         const customerPackages = appData.packages.filter(pkg => pkg.customerid === customer.id);
-        // Calculate total weight and total price for the customer
         const totalWeight = customerPackages.reduce((acc, pkg) => acc + parseFloat(pkg.weight), 0);
         const totalPrice = customerPackages.reduce((acc, pkg) => acc + parseFloat(pkg.price), 0);
-        // Push the invoice data to the newInvoices array
         newInvoices.push({
           customerName: customer.name,
           totalWeight,
           totalPrice
         });
       });
-      // Update the state with the new invoices
       setInvoices(newInvoices);
     };
-
     generateInvoices();
   }, [appData]);
 
   return (
     <>
-     <TableContainer component={Paper}>
+      <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
@@ -49,21 +42,18 @@ function Invoice() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {invoices.map((row,index) => 
-            <TableRow key={index}   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-            >
-            <TableCell>{row.customerName}</TableCell>
-            <TableCell>{row.totalWeight}</TableCell>
-            <TableCell>{row.totalPrice}</TableCell>
-          </TableRow>
-    
-           )}
+            {invoices.map((row, index) =>
+              <TableRow key={index} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+              >
+                <TableCell>{row.customerName}</TableCell>
+                <TableCell>{row.totalWeight}</TableCell>
+                <TableCell>{row.totalPrice}</TableCell>
+              </TableRow>
+            )}
           </TableBody>
         </Table>
       </TableContainer>
     </>
-   
   )
 }
-
 export default Invoice

@@ -26,7 +26,7 @@ function Package() {
     }));
   };
   const handleMoveUp = (index) => {
-    if (index === 0) return; // Already at the top, can't move up
+    if (index === 0) return; 
     const newPackages = [...appData.packages];
     [newPackages[index].shippingOrder, newPackages[index - 1].shippingOrder] = [newPackages[index - 1].shippingOrder, newPackages[index].shippingOrder];
     setAppData(prevData => ({
@@ -36,7 +36,7 @@ function Package() {
   };
 
   const handleMoveDown = (index) => {
-    if (index === appData.packages.length - 1) return; // Already at the bottom, can't move down
+    if (index === appData.packages.length - 1) return; 
     const newPackages = [...appData.packages];
     [newPackages[index].shippingOrder, newPackages[index + 1].shippingOrder] = [newPackages[index + 1].shippingOrder, newPackages[index].shippingOrder];
     setAppData(prevData => ({
