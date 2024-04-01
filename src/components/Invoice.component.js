@@ -9,14 +9,14 @@ import Paper from "@mui/material/Paper";
 import { appContext } from '../App';
 
 function Invoice() {
-  const { appData, setAppData } = useContext(appContext)
+  const { customers, packages } = useContext(appContext);
   const [invoices, setInvoices] = useState([]);
 
   useEffect(() => {
     const generateInvoices = () => {
       const newInvoices = [];
-      appData.customers.forEach(customer => {
-        const customerPackages = appData.packages.filter(pkg => pkg.customerid === customer.id);
+      customers.forEach(customer => {
+        const customerPackages = packages.filter(pkg => pkg.customerid === customer.id);
         const totalWeight = customerPackages.reduce((acc, pkg) => acc + parseFloat(pkg.weight), 0);
         const totalPrice = customerPackages.reduce((acc, pkg) => acc + parseFloat(pkg.price), 0);
         newInvoices.push({
@@ -28,7 +28,7 @@ function Invoice() {
       setInvoices(newInvoices);
     };
     generateInvoices();
-  }, [appData]);
+  }, [customers, packages]);
 
   return (
     <>
@@ -56,4 +56,5 @@ function Invoice() {
     </>
   )
 }
-export default Invoice
+
+export default Invoice;

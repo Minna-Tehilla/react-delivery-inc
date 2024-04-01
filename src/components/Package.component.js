@@ -15,38 +15,30 @@ import { appContext } from "../App";
 import AddPackageModal from './AddPackageModal.component';
 
 function Package() {
+  const { customers, packages, setPackages } = useContext(appContext);
   const [openMod, setOpenMod] = useState(false);
-  const { appData, setAppData } = useContext(appContext);
 
   const handleDeletePackage = (packageId) => {
-    const updatedPackages = appData.packages.filter(pkg => pkg.id !== packageId);
-    setAppData(prevData => ({
-      ...prevData,
-      packages: updatedPackages
-    }));
+    const updatedPackages = packages.filter(pkg => pkg.id !== packageId);
+    setPackages(updatedPackages);
   };
+
   const handleMoveUp = (index) => {
     if (index === 0) return; 
-    const newPackages = [...appData.packages];
+    const newPackages = [...packages];
     [newPackages[index].shippingOrder, newPackages[index - 1].shippingOrder] = [newPackages[index - 1].shippingOrder, newPackages[index].shippingOrder];
-    setAppData(prevData => ({
-      ...prevData,
-      packages: newPackages
-    }));
+    setPackages(newPackages);
   };
 
   const handleMoveDown = (index) => {
-    if (index === appData.packages.length - 1) return; 
-    const newPackages = [...appData.packages];
+    if (index === packages.length - 1) return; 
+    const newPackages = [...packages];
     [newPackages[index].shippingOrder, newPackages[index + 1].shippingOrder] = [newPackages[index + 1].shippingOrder, newPackages[index].shippingOrder];
-    setAppData(prevData => ({
-      ...prevData,
-      packages: newPackages
-    }));
+    setPackages(newPackages);
   };
 
   const openModal = () => setOpenMod(true);
-
+  
   return (
     <div>
       <TableContainer component={Paper}>
@@ -59,7 +51,6 @@ function Package() {
               <TableCell>Price</TableCell>
               <TableCell>Actions</TableCell>
               <TableCell>Shipping Order</TableCell>
-
               <TableCell>
                 <IconButton
                   size="large"
@@ -75,42 +66,36 @@ function Package() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {appData.packages
+            {packages
               .sort((a, b) => a.shippingOrder - b.shippingOrder)
               .map((row, index) => {
-                const customer = appData.customers.find((customer) => customer.id === row.customerid);
+                const customer = customers.find((customer) => customer.id === row.customerid);
                 return (
                   <TableRow
+                    key={row.id}
                     sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                   >
                     <TableCell component="th" scope="row">
                       {row.id}
                     </TableCell>
                     <TableCell> {customer ? customer.name : 'Unknown'}</TableCell>
-
                     <TableCell>{row.weight}</TableCell>
-
-
                     <TableCell>{row.price}</TableCell>
                     <TableCell>
                       <Button onClick={()=>{handleDeletePackage(row.id)}} variant="contained">Delete</Button>
-
                     </TableCell>
                     <TableCell>
-
                       <IconButton onClick={() => handleMoveUp(index)} disabled={index === 0}><ArrowUpwardIcon /></IconButton>
-                      <IconButton onClick={() => handleMoveDown(index)} disabled={index === appData.packages.length - 1}><ArrowDownwardIcon /></IconButton>
+                      <IconButton onClick={() => handleMoveDown(index)} disabled={index === packages.length - 1}><ArrowDownwardIcon /></IconButton>
                     </TableCell>
                   </TableRow>
-
-
                 );
               })}
           </TableBody>
         </Table>
       </TableContainer>
     </div>
-  )
+  );
 }
 
-export default Package
+export default Package;

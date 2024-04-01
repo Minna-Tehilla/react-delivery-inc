@@ -10,22 +10,15 @@ import { Link } from 'react-router-dom';
 import { Button } from '@mui/material';
 import { appContext } from '../App';
 
-
 function Customer() {
-  const { appData, setAppData } = useContext(appContext)
-  console.log(appData)
+  const { customers, packages, setCustomers, setPackages } = useContext(appContext);
   const handleDeleteCustomer = (customerId) => {
-    const updatedPackages = appData.packages.filter((pkg)=>pkg.customerid !== customerId);
-    console.log(updatedPackages)
-   
-    console.log(appData)
-    const updatedCustomers = appData.customers.filter(
-      (customer) => customer.id !== customerId
-    );
-    setAppData({  customers: updatedCustomers, packages : updatedPackages });
-    console.log(appData)
-
+    const updatedCustomers = customers.filter((customer) => customer.id !== customerId);
+    setCustomers(updatedCustomers);
+  const updatedPackages = packages.filter((pkg) => pkg.customerid !== customerId);
+    setPackages(updatedPackages);
   };
+
   return (
     <div>
       <TableContainer component={Paper}>
@@ -39,17 +32,13 @@ function Customer() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {appData.customers.map((row) => {
+            {customers.map((row) => {
               return (
-                <TableRow
-                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                >
-                  <TableCell component="th" scope="row">
-                    {row.id}
-                  </TableCell>
+                <TableRow key={row.id}>
+                  <TableCell>{row.id}</TableCell>
                   <TableCell>{row.name}</TableCell>
                   <TableCell>
-                  <Button variant="contained" component={Link} to={`/create-invoice/${row.id}`}>Create Invoice</Button>
+                    <Button variant="contained" component={Link} to={`/create-invoice/${row.id}`}>Create Invoice</Button>
                   </TableCell>
                   <TableCell>
                     <Button variant="contained" onClick={() => handleDeleteCustomer(row.id)}>Delete</Button>
@@ -61,7 +50,7 @@ function Customer() {
         </Table>
       </TableContainer>
     </div>
-  )
+  );
 }
 
-export default Customer
+export default Customer;

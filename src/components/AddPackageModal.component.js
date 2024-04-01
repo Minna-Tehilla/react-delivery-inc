@@ -1,59 +1,55 @@
 import React, { useContext, useEffect, useState } from 'react';
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import { Modal, Select, Typography, styled, FormControl, InputLabel, MenuItem, TextField, Grid, Snackbar } from "@mui/material";
+import { Modal, Select, Typography, FormControl, InputLabel, MenuItem, TextField, Grid, Snackbar } from "@mui/material";
 import { appContext } from "../App";
 
 function AddPackageModal({ openMod, setOpenMod }) {
     const [selectedCustomer, setSelectedCustomer] = useState(null);
-    const [customerOptions, setCustomerOptions] = useState([])
-    const { appData, setAppData } = useContext(appContext);
+    const [customerOptions, setCustomerOptions] = useState([]);
+    const { customers, packages, setPackages } = useContext(appContext);
+
     useEffect(() => {
-        const customerSelectOptions = appData.customers ? appData.customers.map(customer => ({
-            value: parseInt(customer.id),
-            label: customer.name,
-        })) : [];
-        console.log(customerSelectOptions)
-        setCustomerOptions(customerSelectOptions)
+        if (customers.length > 0) {
+            const customerSelectOptions = customers.map(customer => ({
+                value: parseInt(customer.id),
+                label: customer.name,
+            }));
+            setCustomerOptions(customerSelectOptions);
+        }
+    }, [customers]);
 
-    }, [appData]);
     const closeModal = () => setOpenMod(false);
+    
     const handleFormSubmit = (e) => {
-        e.preventDefault(e);
-        let formDataExists = true
+        e.preventDefault();
         const formData = new FormData(e.target);
-        for (const value of formData.values()) {
-            if (!value || !selectedCustomer) {
-                formDataExists = false
-                alert('Please fill out all fields:)')
-                break
-            }
+        const weight = parseFloat(formData.get('weight'));
+        const price = parseFloat(formData.get('price'));
+        if (!selectedCustomer || isNaN(weight) || isNaN(price)) {
+            alert('Please fill out all fields correctly.');
+            return;
         }
-        if (formDataExists) {
-            const highestPackageId = Math.max(...appData.packages.map(pkg => {
-                const numPart = parseInt(pkg.id.match(/\d+$/)[0]);
-                return isNaN(numPart) ? 0 : numPart;
-            }));
-            const newPackageId = `pak${highestPackageId + 1}`;
-            const highestShippingOrder = Math.max(...appData.packages.map(pkg => pkg.shippingOrder));
-            const newShippingOrder = highestShippingOrder + 1;
-            const newPackage = {
-                id: newPackageId,
-                weight: `${formData.get('weight')}kg`,
-                customerid: formData.get('customerid'),
-                customerid: selectedCustomer,
-                price: formData.get('price'),
-                shippingOrder: newShippingOrder,
-            };
 
-            setAppData((prevAppData) => ({
-                ...prevAppData,
-                packages: [...prevAppData.packages, newPackage],
-            }));
-        }
-        setSelectedCustomer(null)
+        const highestPackageId = Math.max(...packages.map(pkg => {
+            const numPart = parseInt(pkg.id.match(/\d+$/)[0]);
+            return isNaN(numPart) ? 0 : numPart;
+        }));
+        const newPackageId = `pak${highestPackageId + 1}`;
+        const highestShippingOrder = Math.max(...packages.map(pkg => pkg.shippingOrder));
+        const newShippingOrder = highestShippingOrder + 1;
+        const newPackage = {
+            id: newPackageId,
+            weight: `${weight}kg`,
+            customerid: selectedCustomer,
+            price: price.toString(),
+            shippingOrder: newShippingOrder,
+        };
+        setPackages(prevPackages => [...prevPackages, newPackage]);
+        setSelectedCustomer(null);
         closeModal();
     };
+
     const handleChange = (event) => {
         setSelectedCustomer(event.target.value);
     };
@@ -69,9 +65,7 @@ function AddPackageModal({ openMod, setOpenMod }) {
         boxShadow: 24,
         p: 4,
     };
-
-
-
+    
     return (
         <>
             <Modal
@@ -124,4 +118,5 @@ function AddPackageModal({ openMod, setOpenMod }) {
     )
 }
 
-export default AddPackageModal
+export default AddPackageModal;
+

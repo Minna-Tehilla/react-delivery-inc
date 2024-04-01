@@ -3,32 +3,30 @@ import SiteRoutes from './components/SiteRoutes.component'
 
 export const appContext = createContext(null)
 
-
 function App() {
-  const [appData, setAppData] = useState();
-  // todo split appData to two states-packages and customers
+  const [customers, setCustomers] = useState([]);
+  const [packages, setPackages] = useState([]);
+  
   useEffect(() => {
     fetch("/data.json")
       .then((response) => response.json())
       .then((data) => {
         console.log(data)
-        setAppData(data);
+        setCustomers(data.customers)
+        setPackages(data.packages)
       });
   }, []);
   return (
     <>
-      <appContext.Provider value={{
-
-        appData, setAppData
-      }}>
-        {appData &&
-          <SiteRoutes appData={appData} setAppData={setAppData} />
-        }
-        {!appData &&
-          <div>Loading...</div>}
-
+      <appContext.Provider value={{ customers, setCustomers, packages, setPackages }}>
+        {(customers.length > 0 && packages.length > 0) ? (
+          <SiteRoutes customers={customers} setCustomers={setCustomers} 
+          packages={packages} setPackages={setPackages}
+          />
+        ) : (
+          <div>Loading...</div>
+        )}
       </appContext.Provider>
-
     </>
   )
 }

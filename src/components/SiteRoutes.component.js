@@ -4,7 +4,7 @@ import Customer from './Customer.component'
 import Package from './Package.component'
 import Invoice from './Invoice.component'
 import { BrowserRouter as Router } from 'react-router-dom';
-import CreateInvoice from './createInvoice/CreateInvoice.component'
+import CreateInvoice from './CreateInvoice.component'
 import NavBar from './NavBar'
 import HomePage from './HomePage'
 
