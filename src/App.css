@@ -32,7 +32,21 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
+  }
+}
+
+.message {
+  display: none; 
+}
+
+@media screen and (max-width: 600px) {
+  .message {
+    display: block; 
+    text-align: center;
+    padding: 20px;
+    background-color: #ffcccc;
   }
 }

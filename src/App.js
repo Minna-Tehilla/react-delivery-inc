@@ -6,7 +6,7 @@ export const appContext = createContext(null)
 function App() {
   const [customers, setCustomers] = useState([]);
   const [packages, setPackages] = useState([]);
-  
+
   useEffect(() => {
     fetch("/data.json")
       .then((response) => response.json())
@@ -20,8 +20,8 @@ function App() {
     <>
       <appContext.Provider value={{ customers, setCustomers, packages, setPackages }}>
         {(customers.length > 0 && packages.length > 0) ? (
-          <SiteRoutes customers={customers} setCustomers={setCustomers} 
-          packages={packages} setPackages={setPackages}
+          <SiteRoutes customers={customers} setCustomers={setCustomers}
+            packages={packages} setPackages={setPackages}
           />
         ) : (
           <div>Loading...</div>
